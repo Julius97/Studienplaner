@@ -1,0 +1,30 @@
+<h1>Prof</h1>
+<h3>Neuen Prof speichern</h3>
+<p>
+	<%= form_tag prof_index_path, method: :post do %>
+		<%= label_tag "name", "Name" %>
+		<%= text_field_tag "name" %><br /><br />
+		<%= label_tag "subject_id", "Modul" %>
+		<%= select_tag "subject_id", options_from_collection_for_select(Subject.all.order(:name), "id", "name") %><br /><br />
+		<%= submit_tag "Speichern" %>
+	<% end %>
+</p>
+<h3>Auflistung</h3>
+<table cellspacing="10">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Modul</th>
+			<th>Aktionen</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @profs.each do |prof| %>
+			<tr>
+				<td><%= prof.name %></td>
+				<td><%= prof.subject.name %></td>
+				<td><%= link_to "Löschen", prof_path(prof.id), method: :delete, data: { confirm: "Wirklich löschen?" } %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

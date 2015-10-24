@@ -1,0 +1,76 @@
+<h1>Studienplaner</h1>
+<hr />
+<h3>Neue Aufgabe/Termin anlegen</h3>
+<p>
+	<%= form_tag task_index_path, method: :post do %>
+		<%= label_tag "subject_id", "Modul" %>
+		<select name="subject_id">
+			<% Subject.all.order(:name).each do |subject| %>
+				<option value="<%= subject.id %>"><%= subject.name %></option>
+			<% end %>
+		</select><br /><br />
+		(Bitte entweder Veranstaltungs- oder Abgabetyp wählen)<br /><br />
+		<%= label_tag "event_id", "Veranstaltungstyp" %>
+		<select name="event_id">
+			<option value="0">Bitte auswählen</option>
+			<% Event.all.order(:name).each do |event| %>
+				<option value="<%= event.id %>"><%= event.name %></option>
+			<% end %>
+		</select><br /><br />
+		<%= label_tag "handing_in_id", "Abgabetyp" %>
+		<select name="handing_in_id">
+			<option value="0">Bitte auswählen</option>
+			<% HandingIn.all.order(:name).each do |handing_in| %>
+				<option value="<%= handing_in.id %>"><%= handing_in.name %></option>
+			<% end %>
+		</select><br /><br />
+		<fieldset>
+			<legend>Veranstaltungs-/ Abgabetermin</legend>
+			<%= label_tag "day", "Tag"%> <%= number_field_tag "day", Date.today.day,:in => 1..31, :step => 1 %>
+			<%= label_tag "month", "Monat"%> <%= number_field_tag "month", Date.today.month,:in => 1..12, :step => 1 %>
+			<%= label_tag "year", "Jahr"%> <%= number_field_tag "year", Date.today.year,:min => 2015, :step => 1 %><br /><br />
+			<%= label_tag "hour", "Zeit"%> <%= number_field_tag "hour", DateTime.now.hour,:in => 0..23, :step => 1 %> : <%= number_field_tag "min", DateTime.now.min,:in => 0..59, :step => 1 %>
+		</fieldset>
+		<br /><br />
+		<%= label_tag "description", "Aufgabe" %>
+		<%= text_field_tag "description" %><br /><br />
+		<%= label_tag "room", "Raum" %>
+		<%= text_field_tag "room" %><br /><br />
+		<%= label_tag "comment", "Bemerkung" %>
+		<%= text_field_tag "comment" %><br /><br />
+		<%= submit_tag "Speichern" %>
+	<% end %>
+</p>
+<hr />
+<h2>To-Do-List</h2>
+<p>
+	<table cellspacing="10">
+		<thead>
+			<tr>
+				<th>Task-Nr.</th>
+				<th>Datum</th>
+				<th>Modul</th>
+				<th>Veranstaltung / Abgabe</th>
+				<th>Aufgabe</th>
+				<th>Raum / Bemerkung</th>
+				<th>Aktionen</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @tasks.each do |task| %>
+				<tr>
+					<td><%= task.id.to_s %></td>
+					<td><%= task.handing_in_time.strftime("%d.%m.%Y - %H:%M Uhr") %></td>
+					<td><%= task.subject.name %><br />(<%= task.subject.prof.name %>)</td>
+					<td><%= task.task_type.name %></td>
+					<td><%= task.description if !task.description.blank? %></td>
+					<td><%= "Raum " + task.room + ":" if !task.room.blank? %> <%= task.comment if task.comment %></td>
+					<td>
+						<%= link_to "Bearbeiten", edit_task_path(task.id) %> |
+						<%= link_to "Löschen", task_path(task.id), method: :delete, data: { confirm: "Wirklich löschen?" } %>
+					</td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+</p>

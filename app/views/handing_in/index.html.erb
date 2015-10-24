@@ -1,0 +1,26 @@
+<h1>Abgabetyp</h1>
+<h3>Neuer Abgabetyp speichern</h3>
+<p>
+	<%= form_tag handing_in_index_path, method: :post do %>
+		<%= label_tag "name", "Typ" %>
+		<%= text_field_tag "name" %><br /><br />
+		<%= submit_tag "Speichern" %>
+	<% end %>
+</p>
+<h3>Auflistung</h3>
+<table cellspacing="10">
+	<thead>
+		<tr>
+			<th>Typ</th>
+			<th>Aktionen</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @handing_ins.each do |handing_in| %>
+			<tr>
+				<td><%= handing_in.name %></td>
+				<td><%= link_to "Löschen", handing_in_path(handing_in.id), method: :delete, data: { confirm: "Wirklich löschen?" } %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

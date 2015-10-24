@@ -1,0 +1,26 @@
+<h1>Module</h1>
+<h3>Neues Modul speichern</h3>
+<p>
+	<%= form_tag subject_index_path, method: :post do %>
+		<%= label_tag "name", "Bezeichnung" %>
+		<%= text_field_tag "name" %><br /><br />
+		<%= submit_tag "Speichern" %>
+	<% end %>
+</p>
+<h3>Auflistung</h3>
+<table cellspacing="10">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Aktionen</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @subjects.each do |subject| %>
+			<tr>
+				<td><%= subject.name %></td>
+				<td><%= link_to "Löschen", subject_path(subject.id), method: :delete, data: { confirm: "Wirklich löschen?" } %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

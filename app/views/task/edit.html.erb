@@ -1,0 +1,61 @@
+<h1>Task-Nr.<%= @task.id.to_s %> bearbeiten</h1>
+<p>
+	<%= form_tag task_path, method: :put do %>
+		<%= label_tag "subject_id", "Modul" %>
+		<select name="subject_id">
+			<% Subject.all.order(:name).each do |subject| %>
+				<% if @task.subject_id == subject.id %>
+					<option value="<%= subject.id %>" selected><%= subject.name %></option>
+				<% else %>
+					<option value="<%= subject.id %>"><%= subject.name %></option>
+				<% end %>
+			<% end %>
+		</select><br /><br />
+		(Bitte entweder Veranstaltungs- oder Abgabetyp wählen)<br /><br />
+		<%= label_tag "event_id", "Veranstaltungstyp" %>
+		<select name="event_id">
+			<option value="0">Bitte auswählen</option>
+			<% Event.all.order(:name).each do |event| %>
+				<% if @task.task_type_type == "Event" %>
+					<% if @task.task_type_id == event.id %>
+						<option value="<%= event.id %>" selected><%= event.name %></option>
+					<% else %>
+						<option value="<%= event.id %>"><%= event.name %></option>
+					<% end %>
+				<% else %>
+						<option value="<%= event.id %>"><%= event.name %></option>
+				<% end %>
+			<% end %>
+		</select><br /><br />
+		<%= label_tag "handing_in_id", "Abgabetyp" %>
+		<select name="handing_in_id">
+			<option value="0">Bitte auswählen</option>
+			<% HandingIn.all.order(:name).each do |handing_in| %>
+				<% if @task.task_type_type == "HandingIn" %>
+					<% if @task.task_type_id == handing_in.id %>
+						<option value="<%= handing_in.id %>" selected><%= handing_in.name %></option>
+					<% else %>
+						<option value="<%= handing_in.id %>"><%= handing_in.name %></option>
+					<% end %>
+				<% else %>
+						<option value="<%= handing_in.id %>"><%= handing_in.name %></option>
+				<% end %>
+			<% end %>
+		</select><br /><br />
+		<fieldset>
+			<legend>Veranstaltungs-/ Abgabetermin</legend>
+			<%= label_tag "day", "Tag"%> <%= number_field_tag "day", @task.handing_in_time.day,:in => 1..31, :step => 1 %>
+			<%= label_tag "month", "Monat"%> <%= number_field_tag "month", @task.handing_in_time.month,:in => 1..12, :step => 1 %>
+			<%= label_tag "year", "Jahr"%> <%= number_field_tag "year", @task.handing_in_time.year,:min => 2015, :step => 1 %><br /><br />
+			<%= label_tag "hour", "Zeit"%> <%= number_field_tag "hour", @task.handing_in_time.hour,:in => 0..23, :step => 1 %> : <%= number_field_tag "min", @task.handing_in_time.min,:in => 0..59, :step => 1 %>
+		</fieldset>
+		<br /><br />
+		<%= label_tag "description", "Aufgabe" %>
+		<%= text_field_tag "description", @task.description %><br /><br />
+		<%= label_tag "room", "Raum" %>
+		<%= text_field_tag "room", @task.room %><br /><br />
+		<%= label_tag "comment", "Bemerkung" %>
+		<%= text_field_tag "comment", @task.comment %><br /><br />
+		<%= submit_tag "Speichern" %>
+	<% end %>
+</p>

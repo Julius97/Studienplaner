@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Studienplaner</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<p>
+	<%= link_to "Dashboard", root_path %> | <%= link_to "Professoren", prof_index_path %> | <%= link_to "Module", subject_index_path %> | <%= link_to "Veranstaltungen", event_index_path %> | <%= link_to "Abgaben", handing_in_index_path %>
+</p>
+<hr />
+<%= yield %>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  room: MyString
+  comment: MyString
+  delivery_time: 2015-10-23 17:03:56
+  subject_id: 1
+  task_type: MyString
+  task_type_id: 1
+
+two:
+  room: MyString
+  comment: MyString
+  delivery_time: 2015-10-23 17:03:56
+  subject_id: 1
+  task_type: MyString
+  task_type_id: 1
