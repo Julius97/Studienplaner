@@ -1,0 +1,39 @@
+Module-Snippet
+
+task.rb:
+
+	class Task < ActiveRecord::Base
+
+		belongs_to :subject
+		belongs_to :task_type, :polymorphic => true
+
+		validates :handing_in_time, :presence => true
+		validates :subject_id, :presence => true, :numericality => { :only_integer => true }
+		validates :task_type_id, :presence => true, :numericality => { :only_integer => true }
+		validate :handing_in_time_in_future
+
+		def handing_in_time_in_future
+			errors.add("Abgabedatum muss in Zukunft liegen") if self.handing_in_time <= DateTime.now
+		end
+
+	end
+
+handing_in.rb:
+
+	class HandingIn < ActiveRecord::Base
+
+		has_many :tasks, class_name: "Task", :as => :task_type  # nur diese Zeile einfügen
+
+		validates :name, :presence => true, :uniqueness => true
+
+	end
+
+event.rb:
+
+	class Event < ActiveRecord::Base
+
+		has_many :tasks, class_name: "Task", :as => :task_type # nur diese Zeile einfügen
+
+		validates :name, :presence => true, :uniqueness => true
+
+	end

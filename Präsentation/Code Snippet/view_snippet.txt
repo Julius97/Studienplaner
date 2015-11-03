@@ -1,0 +1,33 @@
+View-Snippet
+
+task/index.html.erb:
+
+	<table cellspacing="10">
+		<thead>
+			<tr>
+				<th>Task-Nr.</th>
+				<th>Datum</th>
+				<th>Modul</th>
+				<th>Veranstaltung / Abgabe</th>
+				<th>Aufgabe</th>
+				<th>Raum / Bemerkung</th>
+				<th>Aktionen</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @tasks.each do |task| %>
+				<tr>
+					<td><%= task.id.to_s %></td>
+					<td><%= task.handing_in_time.strftime("%d.%m.%Y - %H:%M Uhr") %></td>
+					<td><%= task.subject.name %><br />(<%= task.subject.prof.name %>)</td>
+					<td><%= task.task_type.name %></td>
+					<td><%= task.description if !task.description.blank? %></td>
+					<td><%= "Raum " + task.room + ":" if !task.room.blank? %> <%= task.comment if task.comment %></td>
+					<td>
+						<%= link_to "Bearbeiten", edit_task_path(task.id) %> |
+						<%= link_to "Löschen", task_path(task.id), method: :delete, data: { confirm: "Wirklich löschen?" } %>
+					</td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
